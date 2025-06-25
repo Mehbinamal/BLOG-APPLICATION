@@ -38,14 +38,17 @@ class SignupView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        try:
+            serializer = UserSerializer(data=request.data)
 
-        if serializer.is_valid():
-            user = serializer.save()
-
-            UserProfile.objects.create(user=user)
-            return Response({'message': 'User created successfully', 'user_id': user.id}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.is_valid():
+                user = serializer.save()
+                # UserProfile is automatically created by signal
+                return Response({'message': 'User created successfully', 'user_id': user.id}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            print(f"Signup error: {e}")
+            return Response({'error': 'An error occurred during signup'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]

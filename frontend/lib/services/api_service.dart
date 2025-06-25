@@ -21,4 +21,18 @@ class ApiService {
       return false;
     }
   }
+
+  static Future<bool> signup(String username, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/signup/'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'username': username, 'password': password}),
+    );
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

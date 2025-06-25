@@ -44,7 +44,16 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Welcome Back',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 32),
             CustomTextField(controller: _usernameController, label: 'Username'),
             const SizedBox(height: 12),
             CustomTextField(
@@ -57,8 +66,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
                     child: const Text('Login'),
                   ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Don\'t have an account? '),
+                TextButton(
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/signup'),
+                  child: const Text('Sign Up'),
+                ),
+              ],
+            ),
           ],
         ),
       ),
