@@ -15,11 +15,11 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      id: json['id'],
+      id: json['id'].toString(),
       title: json['title'],
       content: json['content'],
-      author: json['author'],
-      createdAt: DateTime.parse(json['createdAt']),
+      author: json['author'].toString(),
+      createdAt: DateTime.parse(json['created_at']),
     );
   }
 }
