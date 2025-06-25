@@ -12,16 +12,24 @@ from django.shortcuts import get_object_or_404
 class LoginView(APIView):
     permission_classes = [AllowAny]
     def post(self,request):
+        print(f"Login attempt received: {request.data}")
         username = request.data.get('username')
         password = request.data.get('password')
+        print(f"Username: {username}")
+        print(f"Password provided: {'Yes' if password else 'No'}")
+        
         user = authenticate(username = username, password = password)
+        print(f"Authentication result: {user}")
+        
         if user is not None:
             refresh = RefreshToken.for_user(user)
+            print(f"Login successful for user: {user.username}")
             return Response({
                 'token': str(refresh.access_token),
                 'user_id': user.id
             })
         else:
+            print(f"Login failed for username: {username}")
             return Response({
                 'error': 'Invalid credentials'
             }, status=status.HTTP_401_UNAUTHORIZED)
